@@ -10,4 +10,6 @@ const bridgeClient = new Client({
   httpClient: axios
 });
 
+console.log('config.app is: ', config.app);
+
 export default bridgeClient;

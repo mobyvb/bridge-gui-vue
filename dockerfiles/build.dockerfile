@@ -21,5 +21,5 @@ ENV BILLING_URL $BILLING_URL
 ENV BRIDGE_URL $BRIDGE_URL
 ENV STRIPE_PUBLISHABLE_KEY $STRIPE_PUBLISHABLE_KEY
 
-#CMD ["npm", "run", "build"]
-CMD exec /bin/bash -c "trap : TERM INT; sleep infinity & wait"
+CMD ["npm", "run", "build"]
+#CMD exec /bin/bash -c "trap : TERM INT; sleep infinity & wait"
