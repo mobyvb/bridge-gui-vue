@@ -33,6 +33,8 @@ class Client {
    */
   request (method, path, params = {}, credentials = {}) {
     return new Promise((resolve, reject) => {
+      console.log('this._bridgeURL', this._bridgeURL);
+      console.log('this._baseURL', this._baseURL);
       const privateKey = credentials.privateKey || lStorage.retrieve('privateKey');
       const isGetOrDel = ['GET', 'DELETE'].indexOf(method) !== -1 || false;
 
@@ -42,7 +44,8 @@ class Client {
 
       const baseOpts = {
         baseURL: this._baseURL,
-        method: method.toLowerCase()
+        method: method.toLowerCase(),
+        protocol: 'https'
       };
 
       if (isGetOrDel) {
@@ -59,14 +62,19 @@ class Client {
 
       return this._httpClient(opts)
         .then((result) => resolve(result))
-        .catch((err) => reject(err));
+        .catch((err) => {
+          console.log('testing error: ', err);
+          console.log('baseOpts', baseOpts);
+          reject(err);
+        });
     });
   }
 
   _ecdsa (method, path, params, privateKey, isGetOrDel) {
     const storj = new Storj({
       bridge: this._bridgeURL,
-      key: privateKey
+      key: privateKey,
+      protocol: 'https'
     });
 
     const keypair = storj.generateKeyPair(privateKey);
@@ -82,7 +90,7 @@ class Client {
     const signedContract = keypair.sign(contract, { compact: false });
 
     const query = isGetOrDel ? `?${payload}` : ``;
-
+    console.log('path ', path);
     const opts = {
       url: path + query,
       headers: {
@@ -91,11 +99,14 @@ class Client {
       }
     };
 
+    console.log('ecdsa opts: ', opts);
     return opts;
   }
 
   _basicAuth (method, path, params, credentials, isGetOrDel) {
     const query = isGetOrDel ? `?${qs.stringify(params)}` : ``;
+
+    console.log('path ', path);
 
     const opts = {
       url: path + query,
@@ -104,7 +115,7 @@ class Client {
         pass: credentials.password
       }
     };
-
+    console.log('auth_opts: ', opts);
     return opts;
   }
 }
