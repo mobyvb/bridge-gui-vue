@@ -36,8 +36,7 @@ module.exports = {
     cssSourceMap: false
   },
   app: {
-    NAME: 'storj-bridge-gui',
-    TEST: 'test',
+    NAME: 'storj-bridge-gui-updated',
     BRIDGE_URL: process.env.NODE_ENV === 'development'
       ? 'http://localhost:6382' : process.env.BRIDGE_URL,
     BILLING_URL: process.env.NODE_ENV === 'development'
