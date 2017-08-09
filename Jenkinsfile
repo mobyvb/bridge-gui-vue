@@ -9,7 +9,7 @@ node('node') {
 
       sh "git rev-parse --short HEAD > .git/commit-id"
       def commit_id = readFile('.git/commit-id').trim()
-      rm -r ./dist/*
+      sh "rm -r ./dist/*"
       sh "./dockerfiles/build.sh storjlabs/bridge-gui-vue ${env.BUILD_ID}"
       sh "./dockerfiles/build.sh storjlabs/bridge-gui-vue ${commit_id}"
       sh "./dockerfiles/build.sh storjlabs/bridge-gui-vue latest"
